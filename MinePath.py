@@ -160,6 +160,7 @@ def craft():
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 print ('Generating Realty...')
+print ('welcome')
 time.sleep(0.25) #delay
 
 overworld()
