@@ -2,13 +2,16 @@ import random
 import time
 CT=0
 dtime=0
-realhealth=2
+realhealth=20
 r = 0
+Puses = 0
+# axeD == 0
+# pickaxeD == 0
+# swordD == 0
 
-
-i = [ 0 , 0 , 0 , 0 , 0]
-#_ =[ 0 , 1 , 2 , 3]
-#i = [ STICKS , LOGS , PLANKS , COBBLE , Iron]
+i = [ 0 , 0 , 0 , 0 , 0 , 0]
+#_ =[ 0 , 1 , 2 , 3 , 4 , 5]
+#i = [ STICKS , LOGS , PLANKS , COBBLE , Iron , Torches]
 
 d = [ 0 , 0 , 0 , 0]
 #d = [Pickaxe , Sword, Sovel , Axe]
@@ -21,6 +24,9 @@ o = [0 , 0]
 #o = [Coal , Iron Ore]
 
 
+if d[1]== 0:
+	Suses =0
+
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #OVERWORLD OVERWORLD OVERWORLD OVERWORLD OVERWORLD OVERWORLD OVERWORLD
 def overworld():
@@ -28,12 +34,14 @@ def overworld():
 	global dtime
 
 	print ('\n {OUTSIDE}.')
-	choice = input('>chop< OR >mine< OR >craft<? ')
+	choice = input('>chop< OR >mine< OR >craft<? OR >smelt< ')
 	choice = str(choice)
 	if choice == 'chop':
 		trees()
 	elif choice == 'mine':
 		mine()
+	elif choice == 'smelt':
+		furnace()
 	elif choice == 'i':
 		invintory()
 	elif choice == 'd':
@@ -56,10 +64,8 @@ def overworld():
 		craft()
 	elif choice == 'cancel':
 		print('Thanks for Playing')
-	elif choice == 'givesword':
-		d[1]+=1
-		print('{}'.format(d))
-		overworld()
+	elif choice == 'help':
+		help()
 	else:
 		overworld()
 	
@@ -118,6 +124,7 @@ def fightMonster():
 	global livesLost
 	global monster
 	global dtime
+	global swordD
 
 	strat = input('_____? ')
 	live = random.randint(1,5)
@@ -131,7 +138,7 @@ def fightMonster():
 		if d[1] == 0:
 			print ('You need a SWORD to fight.')
 			live = random.randint(1,5)
-			if live == 3: #or live == 2:
+			if live == 3 or live == 2:
 				print ('You LIVE')
 				# global monster
 				# if monster == 1:
@@ -157,11 +164,34 @@ def fightMonster():
 				livesLost = 0
 				livesLost = random.randint(3,8)
 				if livesLost >= realhealth:
+				
+					if d[1] == 0:
+						Suses = 0
+					elif d[1] > 0:
+						Suses -= 1
+						if Suses == 0:
+							print('Your SWORD broke')
+							d[0] == 0
+					else:
+						print('Sword HP: {}'.format(Suses))
+
 					die()
+
 				else:
 					('- {} HP'.format(livesLost))
 					realhealth -= livesLost
 					print ('{} HP'.format(realhealth))
+
+				if d[1] == 0:
+					Suses = 0
+				elif d[1] > 0:
+					Suses -= 1
+					if Suses == 0:
+						print('Your SWORD broke')
+						d[0] == 0
+				else:
+					print('Sword HP: {}'.format(Suses))
+
 					night()
 			else:
 				print ('You LIVE')
@@ -193,7 +223,7 @@ def die():
 	dtime += 3
 	print ('You DIED')
 
-	stuffLost = random.randint(3,7)
+
 	# while repeat <= 4:
 	# 	rd == 5
 	# 	if i[rd] > 4:
@@ -205,17 +235,30 @@ def die():
 	# 		rd += 1
 	# 		repeat += 1
 
-	for x in range(len(i)):
-		r == 0
-		if i[r] > 4:
-			i[r] -= 5
-			r += 1
-		else:
-			i[r]== 0
-			# rd += 1
+	# for x in range(len(i)):
+	# 	r == 0
+	# 	if i[r] > 4:
+	# 		i[r] -= 5
+	# 		r += 1
+	# 	else:
+	# 		i[r]== 0
+	# 		# rd += 1
+	# stuffLost = random.randint(5,7)
+	# r = 1
+	# goagain = 0
+	# while goagain <= 4:
+	# 	if i[r] < 3:
+	# 		i[r] = 4
+	# 		r += 1
+	# 	else:
+	# 		i[r] -= stufflost
+	# 		r += 1
+	i = [ 0 , 0 , 0 , 0 , 0 , 0]
 
 
 	print('I = {}'.format(i))
+
+	d = [0 , 0 , 0 ,0]
 	if dtime >=10 and dtime <= 25:
 		night()
 	else: 
@@ -228,33 +271,42 @@ def die():
 def trees():
 	global logsDropped
 	global dtime
-	if dtime <10:
-		print ('\nChop.' , end = '\r')
-		time.sleep(0.30) #delay
-		print ('Chop..' , end = '\r')
-		time.sleep(0.30) #delay
-		print ('Chop...')
-		time.sleep(0.30) #delay
+	global Auses
+	print ('\n Chop.' , end = '\r')
+	time.sleep(0.30) #delay
+	print (' Chop..' , end = '\r')
+	time.sleep(0.30) #delay
+	print (' Chop...')
+	time.sleep(0.30) #delay
 
-		dtime += int(1)
+	dtime += int(1)
 		
-		print('\n')
+	print('\n')
 
-		SticksDropped = random.randint(0,4)
-		SticksDropped += d[3]
-		if SticksDropped != 0:
-			print ('You got {} STICKS'.format(SticksDropped))
-			i[0] += SticksDropped
+	SticksDropped = random.randint(0,4)
+	SticksDropped += d[3]
+	if SticksDropped != 0:
+		print ('+ {} STICKS'.format(SticksDropped))
+		i[0] += SticksDropped
 			
 			
-		logsDropped = random.randint(4,7)
-		logsDropped += d[3]
-		print ('You got {} LOGS'.format(logsDropped))
-		i[1] += logsDropped
-			
-		overworld()
-	else:
-		night()
+	logsDropped = random.randint(4,7)
+	logsDropped += d[3]
+	print ('+ {} LOGS'.format(logsDropped))
+	i[1] += logsDropped
+
+	if d[3] == 0:
+		Auses = 0
+
+	elif d[3] > 0:
+		Auses -= 1
+		if Auses == 0:
+			print('Your AXE broke')
+			d[3] = 0
+		else:
+			print('Axe HP: {}'.format(Auses))
+	overworld()
+
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # MINE MINE MINE MINE MINE MINE MINE MINE MINE MINE MINE MINE MINE MINE
@@ -262,6 +314,8 @@ def trees():
 def mine():
 	
 	global dtime
+	global Puses
+
 	if dtime <10:
 		print ('\nMine.' , end='\r')
 		time.sleep(0.40) #delay
@@ -279,42 +333,50 @@ def mine():
 			print ('Craft a PICKAXE to mine')
 		if d[0]==1:
 			CobbleDropped = random.randint(4,7)
-			print ('You got {} COBBLESTONE.'.format(CobbleDropped))
+			print ('+ {} COBBLESTONE.'.format(CobbleDropped))
 			i[3] += CobbleDropped
 		
 			CoalDropped = random.randint(0,3)
 			if CoalDropped != 0:
-				print('You got {} COAL.'.format(CoalDropped))
+				print('+ {} COAL.'.format(CoalDropped))
 				o[0] += CoalDropped
 				
 		if d[0]==2:
 			CobbleDropped = random.randint(6,9)
-			print ('You got {} COBBLESTONE.'.format(CobbleDropped))
+			print ('+ {} COBBLESTONE.'.format(CobbleDropped))
 			i[3] += CobbleDropped
 		
 			CoalDropped = random.randint(3,6)
-			print('You got {} COAL.'.format(CoalDropped))	
+			print('+ {} COAL.'.format(CoalDropped))	
 			o[0] += CoalDropped
 
 			IronOreDropped = random.randint(0,2)
 			if IronOreDropped != 0:
-				print('You got {} IRON ORE.'.format(IronOreDropped))
+				print('+ {} IRON ORE.'.format(IronOreDropped))
 				o[1]+= IronOreDroppd
-				
-		overworld()
-	else:
-		night()
+	
+	if d[0] == 0:
+		Puses = 0
+
+	elif d[0] > 0:
+		Puses -= 1
+		if Puses == 0:
+			print('Your PICKAXE broke')
+			d[0] = 0
+		else:
+			print('Pickaxe HP: {}'.format(Puses))
+	overworld()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
 # OTHERS OTHERS OTHERS OTHERS OTHERS OTHERS OTHERS OTHERS OTHERS OTHERS
 def invintory():
-	print ('{}'.format(i))
-	print('S, P, L,Cb,Ii')
+	print ('\n{}'.format(i))
+	print(' S, L, P, Cb ,Ii,T')
 	overworld()
 		
 def hud():
 	print ('{}'.format(d))
-	print('P,S,A,SH')
+	print('P,S,Sh,A')
 	overworld()
 
 def atime():
@@ -338,142 +400,269 @@ def food():
 def ores():
 	print('{}'.format(o))
 	print('Cl,Io')
+	overworld()
+
+def help():
+	print('\nWelcome to MinePath. You have entered the help tutorial.')
+	print('To make a choice in the {OVERWORLD}, enter in the >code<')
+	print('Other {OVERWOLD} commands are: >t< >i< >o< >d< >h<')
+	print('\n>t< gives you the time')
+	print('>i< and >o< will give you your invintory and ore invin.')
+	print('>d< shows you your tools and >h< shows your health')
+	print('Most commands can be run wherever there is a promt')
+	print('\n>d< will give you a list of numbers.')
+	print('-The first slot is your Pickaxe, second Sword, third Shovel, fourth Axe.')
+	print('-The number in each slot is the material. 1=wood 2=stone 3=iron')
+	print('\nIn the craft and smelt interface you enter the whole command or just the first letter.')
+	print('-When asked if you want to smelt or craft again (____?)...')
+	print(' You may enter " " or "yes" to craft again.')
+	print('\nYou can reaccess this tutorial whenever you are in the {OVERWORLD}')
+	time.sleep(5) #delay
+	
+	overworld()
+	
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # CRAFT CRAFT CRAFT CRAFT CRAFT CRAFT CRAFT CRAFT CRAFT CRAFT CRAFT CRAFT
 
 def craft():
 	global CT
 	global inputt
+	global Auses
+	global Puses
+	global Suses
 
 	while CT == 0:
+		if i[1] == 0:
+			print('You dont have any materials.')
+			overworld()
+#No plank
 		if i[1] > 0 and i[2]< 4:
-			inputt = input('>PLANKS< OR >cancel<')
-			if inputt=='planks':
+			inputt = input('>PLANKS< OR >STICKS< >cancel<')
+			if inputt=='planks' or inputt=='p':
 				i[1] -= 1
 				i[2] += 4
+				print('+ 4 PLANKS')
 				inputt = input('Craft Again?')
-				if inputt == ' ':
+				if inputt == ' ' or inputt == 'yes':
 					craft()
-				break
-				
-		elif i[2] >= 4:
-			inputt = input('>planks< OR >sticks< OR >crafting table< OR >cancel< ')
-			if inputt == 'planks':
-				i[1] -= 1
-				i[2] += 4
-				inputt = input('Craft Again?')
-				if inputt == ' ':
-					craft()
-				break
-				
-			
-			if inputt == 'sticks':
+				else:
+					overworld()
+
+		if inputt == 'sticks' or inputt=='s' and i[2]>=2:
 				i[2] -= 2
 				i[0] += 4
+				print('+ 4 STICKS')
 				inputt = input('Craft Again?')
 				if inputt == ' ':
 					craft()
-				break
 				
-			elif inputt == 'ct':	
+
+#has planks
+		elif i[2] >= 4:
+			inputt = input('>planks< OR >sticks< OR >crafting table< OR >cancel< ')
+			if inputt == 'planks' or inputt=='p' and i[1]>=1:
+				i[1] -= 1
+				i[2] += 4
+				print('+ 4 PLANKS')
+				inputt = input('Craft Again?')
+				if inputt == ' ':
+					craft()
+				else:
+					break
+				
+			
+			if inputt == 'sticks' or inputt=='s' and i[2]>=2:
+				i[2] -= 2
+				i[0] += 4
+				print('+ 4 STICKS')
+				inputt = input('Craft Again?')
+				if inputt == ' ':
+					craft()
+				else:
+					break
+ 
+			if inputt == 'torch' or inputt=='t'and i[0] >=1 and o[0]>= 1:
+				i[0]-= 1
+				o[0] -= 1
+				i[5] += 4
+				print('+ 4 TORCHES')
+				inputt = input('Craft Again?')
+				if inputt == ' ':
+					craft()
+				else:
+					break
+
+				
+			elif inputt == 'ct' or inputt == 'craftingtable' and i[2]>=4:
 				i[2] -= 4
 				CT += 1
+				print('+ CRAFTING TABLE')
 				inputt = input('Craft Again?')
 				if inputt == ' ':
 					craft()
-				break
+				else:
+					break
+
+			elif inputt == 'cancel':
+				overworld()
+			else:
+				print('Sorry, you dont have enough materials')
+				print('{}'.format(i))
 			
-				
+#has CT~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	if CT == 1:
 		inputt = input('craft ____?')
-		
-		if inputt == 'planks':
+#Planks		
+		if inputt == 'planks' or inputt=='p' and i[1]>=1:
 			i[1] -= 1
 			i[2] += 4
+			print('+ 4 PLANKS')
 			inputt = input('Craft Again?')
 			if inputt == ' ':
 				craft()
-				
-		if inputt == 'sticks':
+#Sticks				
+		if inputt == 'sticks' or inputt=='t'and i[0] >=1 and o[0]>= 1:
 			i[2] -= 2
 			i[0] += 4
+			print('+ 4 STICKS')
 			inputt = input('Craft Again?')
 			if inputt == ' ':
 				craft()
 
+		if inputt == 'torch' or inputt=='t'and i[0] >=1 and o[0]>= 1:
+			i[0]-= 1
+			o[0] -= 1
+			i[5] += 4
+			print('+ 4 TORCHES')
+			inputt = input('Craft Again?')
+			if inputt == ' ':
+				craft()
+
+#Pickaxe
 		if inputt == 'pickaxe':
 			pickaxeM = input ('Material?')
+	#Wood
 			if pickaxeM == 'wood' and i[0]>=2 and i[2]>=3:
 				i[0] -= 2
 				i[2] -= 3
 				d[0] -= d[0]
 				d[0] += 1
-				print ('Crafted WOOD PICKAXE')
+				Puses -= Puses
+				Puses += 5
+				print ('+ WOOD PICKAXE')
+				print('Pickaxe HP:{}'.format(Puses))
 				inputt = input('Craft Again?')
 				if inputt == ' ':
 					craft()
 			
-
+	#Stone
 			elif pickaxeM == 'stone' and i[0]>=2 and i[3]>=3:
 				i[0] -= 2
 				i[3] -= 3
 				d[0] -= d[0]
 				d[0] += 2
-				print ('Crafted STONE PICKAXE')
+				Puses -= Puses
+				Puses += 10
+				print ('+ STONE PICKAXE')
+				print('Pickaxe HP:{}'.format(Puses))
 				inputt = input('Craft Again?')
 				if inputt == ' ':
 					craft()
-				
+	#Iron
+			elif pickaxeM == 'iron' and i[0]>=2 and i[4]>=3:
+				i[0]-=2
+				i[4] -= 3
+				d[0] -= d[0]
+				d[0] += 3
+				Puses -= Puses
+				Puses += 15
+				print('+ Iron Pickaxe')
+				print('Pickaxe HP:{}'.format(Puses))
+				inputt = input('Craft Again?')
+				if inputt == ' ':
+					craft()
 			else:
 				print('Sorry, you dont have enough materials.')
-				
+				print('{}'.format(i))
+#Axe				
 		if inputt == 'axe':
 			axeM = input ('Material?')
+	#Wood
 			if axeM == 'wood' and i[0]>=2 and i[2]>=3:
 				i[0] -= 2
 				i[2] -= 3
 				d[3] -= d[3]
 				d[3] += 1
-				print ('Crafted WOOD AXE')
+				Auses -= Auses
+				Auses += 5
+				print ('+ WOOD AXE')
+				print('Axe HP:{}'.format(Auses))
 				inputt = input('Craft Again?')
 				if inputt == ' ':
 					craft()
+	#Stone
 			elif axeM == 'stone' and i[0]>=2 and i[3]>=3:
 				i[0] -= 1
 				i[3] -= 2
 				d[3] -= d[3]
 				d[3] += 1
-				print('Crafted STONE AXE')
+				Auses -= Auses
+				Auses += 10
+				print('Axe HP:{}'.format(Auses))
+				print('+ STONE AXE')
+				inputt = input('Craft Again?')
+				if inputt == ' ':
+					craft()
 			else:
 				print('Sorry, you dont have enough materials.')
-
+				print('{}'.format(i))
+#Sword
 		if inputt == 'sword':
 			swordM = input ('Material?')
+	#Wood
 			if swordM == 'wood' and i[0]>=1 and i[2]>=2:
 				i[0] -= 1
 				i[2] -= 2
 				d[1] -= d[1]
 				d[1] += 1
-				print ('Crafted WOOD SWORD')
+				Suses -= Suses
+				Suses += 5
+				print ('+ WOOD SWORD')
+				print('Sword HP:{}'.format(Suses))
 				inputt = input('Craft?')
 				if inputt == ' ':
 					craft()
+	#Stone
 			elif swordM == 'stone' and i[0]>=1 and i[3]>=2:
 				i[0] -= 1
 				i[3] -= 2
 				d[1] -= d[1]
 				d[1] += 1
-				print('Crafted STONE SWORD')
+				Suses -= Suses
+				Suses += 5
+				print('+ STONE SWORD')
+				print('Sword HP:{}'.format(Suses))
+				inputt = input('Craft?')
+				if inputt == ' ':
+					craft()
 			else:
 				print('Sorry, you dont have enough materials.')
+				print('{}'.format(i))
+
+		elif inputt == 'cancel':
+			overworld()
+		else:
+			craft()
 
 	overworld()
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-# Furnace Furnace Furnace Furnace Furnace Furnace Furnace Furnace
+# Furnace Furnace
+# ace Furnace Furnace Furnace Furnace Furnace Furnace
 def furnace():
 	inputt = input('Smelt _____?')
 
-	if inputt == iron and o[0]>=1 and o[1]>=3:
+#IronIngots
+	if inputt == 'iron' and o[0]>=1 and o[1]>=3:
 		print('Smelting..' , end='\r')
 		time.sleep(0.30) #delay
 		print('Smelting...' , end='\r')
@@ -494,10 +683,13 @@ def furnace():
 			inputt = input('Smelt Again?')
 			if inputt == ' ':
 				furnace()
-	if inputt == logs and i[1]>=2:
+			else:
+				overworld()
+#Logs
+	if inputt == 'logs' and i[1]>=2:
 		print('Smelting..' , end='\r')
 		time.sleep(0.30) #delay
-		print('Smelting...' , end='\r')
+		print('Smelting...')
 		time.sleep(0.30) #delay
 		i[1]-=2
 		o[0]+=1
@@ -505,7 +697,14 @@ def furnace():
 		inputt = input('Smelt Again?')
 		if inputt == ' ':
 			furnace()
+		else:
+			overworld()
 
+	if inputt == 'cancel':
+		overworld()
+	else:
+		print('Insufficient materials.')
+		overworld()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # START START START START START START START START START START START
